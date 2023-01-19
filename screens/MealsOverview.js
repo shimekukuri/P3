@@ -1,5 +1,6 @@
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, FlatList } from 'react-native';
 import { MEALS } from '../data/dummy-data';
+import MealItem from '../components/MealItem';
 
 function MealsOverViewScreen({
   route: {
@@ -8,9 +9,28 @@ function MealsOverViewScreen({
 }) {
   const MEAL = MEALS.filter((X) => X.categoryIds.indexOf(categoryId) >= 0);
 
+  const renderMealItem = (itemData) => {
+    const { item } = itemData;
+    const { title, imageUrl, duration, complexity, affordability } = item;
+
+    return (
+      <MealItem
+        title={title}
+        imageURL={imageUrl}
+        duration={duration}
+        complexity={complexity}
+        affordability={affordability}
+      />
+    );
+  };
+
   return (
-    <View style={style.padding}>
-      <Text>Meals Overview Container {categoryId}</Text>
+    <View style={style.container}>
+      <FlatList
+        data={MEAL}
+        renderItem={renderMealItem}
+        keyExtractor={(item) => item.id}
+      />
     </View>
   );
 }
